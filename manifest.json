@@ -1,0 +1,7 @@
+{
+  "name": "figma-plugins-vue-ts-boilerplate",
+  "id": "YOUR_PLUGIN_ID",
+  "api": "1.0.0",
+  "main": "build/main.js",
+  "ui": "build/ui.html"
+}
