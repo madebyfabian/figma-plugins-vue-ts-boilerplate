@@ -57,7 +57,7 @@
     font-size: 16px;
   }
 
-  html, * {
+  *, *::after, *::before {
     letter-spacing: -.05;
     box-sizing: border-box;
   }
