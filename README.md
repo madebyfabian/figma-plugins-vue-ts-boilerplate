@@ -6,6 +6,7 @@ A very simple vue.js/typescript boilerplate for creating figma plugins. Does inc
 - Webpack
 - Vue Views
 - Inter font loaded in UI
+- a11y (accessibility) global helper class, that detects if the user is using keyboard and turns :focus outlines on, or off if he is using the mouse.
 
 # Installation
 ### Step 1 
