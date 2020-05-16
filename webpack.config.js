@@ -1,26 +1,40 @@
 const path = require('path')
-const VueLoaderPlugin = require('vue-loader/lib/plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin')
 
-const WebpackMessages = require('webpack-messages')
+// Plugins
+const HtmlWebpackPlugin = require('html-webpack-plugin'),
+			HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin'),
+			WebpackMessages = require('webpack-messages'),
+			CopyPlugin = require('copy-webpack-plugin') // added by me
+
+// Vue-Specific Plugins
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
+
+
+const figmaPluginTitleLabels = {
+	production: '🚀 PROD',
+	development: '⚙️ DEV'
+}
+
 
 console.clear()
 
 module.exports = (env, argv) => ({
+	mode: (argv.mode === 'production') ? 'production' : 'development',
+
 	// This is necessary because Figma's 'eval' works differently than normal eval
 	devtool: argv.mode === 'production' ? false : 'inline-source-map',
 
-	entry: {
-		ui: './src/ui.ts',
-		main: './src/main.ts',
-	},
-
-	resolveLoader: {
-		modules: [path.join(__dirname, 'node_modules')]
-	},
-
 	stats: false,
+
+	entry: {
+		main: './src/main.ts',
+		ui: './src/ui.ts'
+	},
+
+	output: {
+		filename: '[name].js',
+		path: path.join(__dirname, 'build'),
+	},
 
 	module: {
 		rules: [
@@ -40,17 +54,16 @@ module.exports = (env, argv) => ({
 		],
 	},
 
+	resolveLoader: {
+		modules: [path.join(__dirname, 'node_modules')]
+	},
+
 	resolve: {
 		// Webpack tries these extensions for you if you omit the extension like "import './file'"
 		extensions: ['.tsx', '.ts', '.jsx', '.js', '.vue', '.json'],
 		alias: {
 			'vue$': 'vue/dist/vue.esm.js'
 		}
-	},
-
-	output: {
-		filename: '[name].js',
-		path: path.resolve(__dirname, 'build'),
 	},
 
 	plugins: [
@@ -62,7 +75,26 @@ module.exports = (env, argv) => ({
 		}),
 		new HtmlWebpackInlineSourcePlugin(),
 		new VueLoaderPlugin(),
-		new WebpackMessages()
+		new WebpackMessages(),
+
+		// added by me
+    new CopyPlugin({
+			patterns: [
+				{ 
+					from: './src/manifest.json', 
+					to: './manifest.json',
+					transform: (contentBuffer, path) => {
+						try {
+							const content = JSON.parse(contentBuffer.toString())
+							content.name = `${(argv.mode === 'production' ? figmaPluginTitleLabels.production : figmaPluginTitleLabels.development)} — ${content.name}`
+							return Buffer.from(JSON.stringify(content))
+						} catch (error) {
+							console.error(error)
+						}
+					}
+				}
+			]
+		})
 	],
 
 	node: {
