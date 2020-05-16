@@ -33,14 +33,7 @@
 </script>
 
 <style lang="scss">
-  @font-face {
-    font-family: 'Inter var';
-    font-weight: 100 900;
-    font-display: swap;
-    font-style: normal;
-    font-named-instance: 'Regular';
-    src: url('./assets/fonts/Inter-roman.var.woff2?v=3.11') format('woff2');
-  }
+  @import url('https://rsms.me/inter/inter.css');
 
   * {
     font-family: 'Inter var', system-ui, sans-serif!important;
@@ -53,23 +46,30 @@
     }
   }
 
+  *:not(html) {
+    font-size: 11px;
+    letter-spacing: 0.055px;
+  }
+
   html {
     font-size: 16px;
   }
 
+  body {
+    margin: 0;
+  }
+
   *, *::after, *::before {
-    letter-spacing: -.05;
     box-sizing: border-box;
+    line-height: 16px;
   }
 
   .using-keyboard *:focus {
-    box-shadow: 0 0 0 3px rgba(#4D90FE, .33);
+    box-shadow: 0 0 0 2px #18a0fb!important;
   }
   
   body {
-    margin: 1.25rem 1rem 0;
     color: #333;
     overflow: hidden;
-    font-size: 12px;
   }
 </style>
