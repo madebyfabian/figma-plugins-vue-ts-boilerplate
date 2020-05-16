@@ -1,6 +1,6 @@
 # figma-plugins-vue-ts-boilerplate
 A very simple vue.js/typescript boilerplate for creating figma plugins. Does include:
-- figma.d.ts typings file
+- figma.d.ts typings dependency
 - Sass (.scss)
 - Webpack
 - Vue Views
